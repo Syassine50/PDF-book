@@ -43,7 +43,7 @@ export default function App() {
   else {
     return (
           <NavigationContainer>
-            <AppStack.Navigator headerMode="none">
+            <AppStack.Navigator screenOptions={{headerShown: false}}>
               <AppStack.Screen name={"login"} component={LoginScreen}/>
               <AppStack.Screen name={"Onboarding"} component={OnBoardingScreen}/>
             </AppStack.Navigator>
