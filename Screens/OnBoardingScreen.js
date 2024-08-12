@@ -20,7 +20,7 @@ const OnBoardingScreen = ({ navigation }) => {
         if (currentIndex < slides.length - 1) {
             slidesRef.current.scrollToIndex({ index: currentIndex + 1 });
         } else {
-            navigation.navigate("login");
+            navigation.replace("Listing");
         }
     };
 
@@ -47,7 +47,7 @@ const OnBoardingScreen = ({ navigation }) => {
             </View>
             <View style={styles.containerButton}>
                 <NextButton scrollTo={scrollTo} percentage={(currentIndex + 1) * (100 / slides.length)}  />
-                <TouchableOpacity onPress={() => navigation.navigate("login")} style={styles.skipButton}>
+                <TouchableOpacity onPress={() => navigation.replace("Listing")} style={styles.skipButton}>
                     <Text style={styles.skipButtonText}>skip</Text>
                 </TouchableOpacity>
             </View>
