@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler' ;
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 
 import React, {useEffect} from "react";
@@ -16,7 +15,7 @@ import AdddBook from "./Screens/AdddBook";
 const AppStack = createStackNavigator();
 
 export default function App({navigation}) {
-  const Tab = createMaterialBottomTabNavigator();
+
   const Stack = createStackNavigator()
   const [ isFirstLaunch , setIsFirstLaunch ] = React.useState(null);
   useEffect(() => {

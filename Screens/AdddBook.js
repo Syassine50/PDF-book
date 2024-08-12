@@ -1,10 +1,25 @@
 import React, {useState} from "react";
 import {View, Text, StyleSheet, Button, StatusBar, SafeAreaView, TextInput ,} from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 
 const AdddBook= ({navigation}) => {
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date) => {
+        console.warn("Une date a été sélectionnée : ", date);
+        hideDatePicker();
+    };
     return(
         /*<View style={styles.container} >
             <Text>new fileaaqsdqaa</Text>
@@ -19,7 +34,15 @@ const AdddBook= ({navigation}) => {
                         <Text style={styles.textinput} >Réference de livre :</Text>
                         <TextInput  placeholder={"Réference de livre"} style={styles.input}/>
                         <Text style={styles.textinput} >Date de création :</Text>
-
+                        <>
+                            <Button title="Open" onPress={() => showDatePicker(true)} />
+                            <DateTimePickerModal
+                                isVisible={isDatePickerVisible}
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
+                            />
+                        </>
                         <Text style={styles.textinput} >Label :</Text>
                         <TextInput  placeholder={"label votre livre"} style={styles.input}/>
                         <Text style={styles.textinput} >Date d’expiration  :</Text>
