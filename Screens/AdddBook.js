@@ -89,11 +89,11 @@ import {Picker} from '@react-native-picker/picker';
         }
         else if (!label || !description ||  !selectedDocument) {
             Alert.alert("Error", "Please fill all fields and select a document");
-            return;
+
         }
 
         else {
-            set(ref(database, 'books' + label), {
+            set(ref(database, 'books/' + label), {
                 BookReference: nextref(),
                 DateCreation: getCurrentDate(),
                 label: label,

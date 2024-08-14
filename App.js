@@ -69,11 +69,11 @@ if (isFirstLaunch===true) {
           <AppStack.Navigator>
 
             <AppStack.Screen name="BOOKS" component={ListingPage}
-                          options={{ title: 'BOOKS' }} />
+                          options={{ title: 'LIVRES' }} />
             <AppStack.Screen  name={"OnBording"} component={OnBoardingScreen} options={{ headerShown: false }}/>
 
             <AppStack.Screen name="add" component={AdddBook}
-                          options={{ title: 'Overview' }} />
+                             options={{ title: 'AJOUT LIVRE' }} />
           </AppStack.Navigator>
         </NavigationContainer>
 
