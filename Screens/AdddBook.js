@@ -5,6 +5,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { database } from '../firebaseConfig';
 import  {firebase} from '../firebaseConfig';
 import { ref, push, serverTimestamp, get , set } from 'firebase/database';
+import {Picker} from '@react-native-picker/picker';
 
 
 
@@ -12,9 +13,12 @@ import { ref, push, serverTimestamp, get , set } from 'firebase/database';
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState(null);
-    const toggleDatePicker = () => {
+    const [selectedType, setSelectedtype] = useState();
+
+        const toggleDatePicker = () => {
         setShowPicker(!showPicker);
     };
+
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -83,7 +87,7 @@ import { ref, push, serverTimestamp, get , set } from 'firebase/database';
         if (formatDate(date)<=getCurrentDate()){
             Alert.alert("selectionner date d'éxpiration differente de celle d'aujourd'hui")
         }
-        else if (!label || !description || !category || !selectedDocument) {
+        else if (!label || !description ||  !selectedDocument) {
             Alert.alert("Error", "Please fill all fields and select a document");
             return;
         }
@@ -95,7 +99,7 @@ import { ref, push, serverTimestamp, get , set } from 'firebase/database';
                 label: label,
                 dateExpiration: formatDate(date),
                 description: description,
-                category: category,
+                category: selectedType,
                 Book:selectedDocument,
 
 
@@ -103,7 +107,6 @@ import { ref, push, serverTimestamp, get , set } from 'firebase/database';
 
             setLabel('')
             setDate(date)
-            setCategory('')
             setDescription('')
             uploadpdf()
             Alert.alert("Book Added!")
@@ -146,11 +149,22 @@ import { ref, push, serverTimestamp, get , set } from 'firebase/database';
                 />
 
                 <Text>Category:</Text>
-                <TextInput
-                    style={styles.input}
-                    value={category}
-                    onChangeText={setCategory}
-                />
+                <Picker
+                    selectedValue={selectedType}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedtype(itemValue)
+                    }>
+                    <Picker.Item label="Nouvelle " value="Nouvelle " />
+                    <Picker.Item label="Conte" value="Conte" />
+                    <Picker.Item label="Mythe" value="Mythe" />
+                    <Picker.Item label="Légende" value="Légende" />
+                    <Picker.Item label="Biographie" value="Biographie" />
+                    <Picker.Item label="Autobiographie" value="Autobiographie" />
+                    <Picker.Item label="Chronique" value="Chronique" />
+                    <Picker.Item label="Apologue " value="Apologue " />
+                    <Picker.Item label="Journal" value="Journal" />
+                    <Picker.Item label="Roman" value="Roman" />
+                </Picker>
 
                 <Text>Réference de livre:</Text>
                 <TouchableOpacity style={styles.input} onPress={pickDocument}>

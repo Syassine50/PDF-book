@@ -5,8 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 
 const ListingPage= ({navigation}) => {
     return(
-        <View style={[styles.container, { flex: 1, alignItems: 'center', justifyContent: 'center' }]} >
-            <Text>new fileaaaaa</Text>
+        <View style={[styles.container, { flex: 1, alignItems: 'center', justifyContent: '' }]} >
+            <TouchableOpacity style={styles.appButtonContainer} onPress={()=> {navigation.navigate("add")}}>
+                <Text style={styles.appButtonText}>Add Book</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.appButtonContainer} onPress={()=> {navigation.replace("OnBording")}}>
+                <Text style={styles.appButtonText}>onboarding</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={()=> {navigation.navigate("add")}}>
             <View style={styles.card}>
                 <View style={styles.cardHeader}>
@@ -19,9 +24,6 @@ const ListingPage= ({navigation}) => {
                 </View>
             </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate('add')}>
-                <Text style={styles.linkText}>aaa</Text>
-            </TouchableOpacity>
         </View>
     )
 };
@@ -32,6 +34,7 @@ const styles = StyleSheet.create({
         flex : 1 ,
         alignItems :'center' ,
         justifyContent : 'center',
+        backgroundColor:'rgba(79,79,79,0.02)'
 
     },
     card: {
@@ -60,5 +63,19 @@ const styles = StyleSheet.create({
     cardContent: {
         marginTop: 8,
     },
-
+    appButtonContainer: {
+        elevation: 8,
+        backgroundColor: "#356bcb",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 12,
+        marginTop:8 ,
+        marginLeft :245,
+    },
+    appButtonText: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        textTransform: "uppercase"
+    }
 });

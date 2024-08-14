@@ -18,6 +18,7 @@ export default function App({navigation}) {
 
   const Stack = createStackNavigator()
   const [ isFirstLaunch , setIsFirstLaunch ] = React.useState(null);
+  console.log(isFirstLaunch)
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched' ).then(value => {
       if(value== null){
@@ -32,14 +33,14 @@ export default function App({navigation}) {
 
 
   },[]);
-  if (isFirstLaunch == null){
-    return null ;
-  }else if (isFirstLaunch===true) {
+if (isFirstLaunch===true) {
     return (
         <NavigationContainer>
-          <AppStack.Navigator >
+          <AppStack.Navigator  >
 
-            <AppStack.Screen name={"Listing"} component={ListingPage}/>
+            <AppStack.Screen  name={"OnBording"} component={OnBoardingScreen}
+                              options={{ headerShown: false }}/>
+            <AppStack.Screen name={"BOOKS"} component={ListingPage}/>
             <AppStack.Screen name={"add"} component={AdddBook}/>
             <AppStack.Screen name={"login"} component={LoginScreen}/>
 
@@ -65,13 +66,17 @@ export default function App({navigation}) {
           </AppStack.Navigator>
         </NavigationContainer>*/
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="listing" component={ListingPage}
+          <AppStack.Navigator>
+
+            <AppStack.Screen name="BOOKS" component={ListingPage}
+                          options={{ title: 'BOOKS' }} />
+            <AppStack.Screen  name={"OnBording"} component={OnBoardingScreen} options={{ headerShown: false }}/>
+
+            <AppStack.Screen name="add" component={AdddBook}
                           options={{ title: 'Overview' }} />
-            <Stack.Screen name="add" component={AdddBook}
-                          options={{ title: 'Overview' }} />
-          </Stack.Navigator>
+          </AppStack.Navigator>
         </NavigationContainer>
+
     )
 
   }
