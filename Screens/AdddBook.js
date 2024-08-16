@@ -116,6 +116,7 @@ const AddBook = ({ navigation }) => {
         }
     };
 
+
     const adddata = async () => {
         if (formatDate(date) <= getCurrentDate()) {
             Alert.alert("Sélectionner une date d'expiration différente de celle d'aujourd'hui")

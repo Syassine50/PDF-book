@@ -94,7 +94,7 @@ const ListingPage= ({navigation}) => {
                     {
                         toDoData.map((item, index) => {
                             return(
-                                <TouchableOpacity key={item.id} onPress={ () => navigation.navigate("add")}>
+                                <TouchableOpacity key={item.id} onPress={ () => navigation.navigate('BookDetails', { bookId: item.id })}>
 
                                     <View style={styles.card} >
                                         <View style={styles.cardHeader}>

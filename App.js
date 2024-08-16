@@ -12,6 +12,7 @@ import LoginScreen from "./Screens/LoginScreen";
 import OnBoardingScreen from "./Screens/OnBoardingScreen";
 import ListingPage from "./Screens/ListingPage";
 import AdddBook from "./Screens/AdddBook";
+import BookDetails from "./Screens/BookDetail";
 const AppStack = createStackNavigator();
 
 export default function App({navigation}) {
@@ -41,6 +42,7 @@ if (isFirstLaunch===true) {
             <AppStack.Screen  name={"OnBording"} component={OnBoardingScreen}
                               options={{ headerShown: false }}/>
             <AppStack.Screen name={"BOOKS"} component={ListingPage}/>
+            <AppStack.Screen name="BookDetails" component={BookDetails} options={{ title: 'Détails du livre' }} />
             <AppStack.Screen name={"add"} component={AdddBook}/>
             <AppStack.Screen name={"login"} component={LoginScreen}/>
 
@@ -71,6 +73,7 @@ if (isFirstLaunch===true) {
             <AppStack.Screen name="BOOKS" component={ListingPage}
                           options={{ title: 'LIVRES' }} />
             <AppStack.Screen  name={"OnBording"} component={OnBoardingScreen} options={{ headerShown: false }}/>
+            <AppStack.Screen name="BookDetails" component={BookDetails} options={{ title: 'Détails du livre' }} />
 
             <AppStack.Screen name="add" component={AdddBook}
                              options={{ title: 'AJOUT LIVRE' }} />
