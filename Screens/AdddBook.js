@@ -1,15 +1,28 @@
-import React, { useState, useCallback } from "react";
-import { View, Text, StyleSheet, StatusBar, SafeAreaView, TextInput, TouchableOpacity, Platform, Alert } from "react-native";
+import React, {useCallback, useState} from "react";
+import {
+    Alert,
+    Platform,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as DocumentPicker from 'expo-document-picker';
-import { database } from '../firebaseConfig';
-import  {firebase} from '../firebaseConfig';
-import { ref, push, serverTimestamp, get , set } from 'firebase/database';
+import {database, firebase , storage} from '../firebaseConfig';
+import {push, ref, set} from 'firebase/database';
+import { uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref as storageRef, deleteObject } from 'firebase/storage';
+
+import * as FileSystem from 'expo-file-system';
+
 import {Picker} from '@react-native-picker/picker';
 
 
-
-    const AddBook = ({ navigation }) => {
+const AddBook = ({ navigation }) => {
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState(null);
@@ -61,55 +74,78 @@ import {Picker} from '@react-native-picker/picker';
     const [category, setCategory] = useState('');
 
     const [uploading , setUploading] =  useState(false) ;
+        function generateUniqueRef() {
+            return push(ref(database, 'books')).key;
+        }
+        const newBookRef = generateUniqueRef();
 
     const uploadpdf = async () => {
         setUploading(true);
         try {
-            const response = await fetch(selectedDocument);
+            if (!selectedDocument) {
+                throw new Error('No document selected');
+            }
+
+            let response;
+            try {
+                response = await fetch(selectedDocument);
+            } catch (fetchError) {
+                console.error('Error fetching the document:', fetchError);
+                throw new Error('Failed to fetch the document');
+            }
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const blob = await response.blob();
             const filename = selectedDocument.substring(selectedDocument.lastIndexOf('/') + 1);
-            const ref = firebase.storage().ref().child(filename);
-            await ref.put(blob);
+            const fileRef = storageRef(storage, 'books/' + filename);
+
+            const snapshot = await uploadBytes(fileRef, blob);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
             setSelectedDocument(null);
-            console.log("ezadazdza")
-        } catch (e) {
-            console.log(e);
-        } finally {
             setUploading(false);
+            console.log('File uploaded successfully. Download URL:', downloadURL);
+            return downloadURL;
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            setUploading(false);
+            throw error;
         }
     };
-        let reference = 0;
-        const nextref = () => {
-            reference+=1;
-            return reference ;
-        };
-    const adddata = () => {
-        if (formatDate(date)<=getCurrentDate()){
-            Alert.alert("selectionner date d'éxpiration differente de celle d'aujourd'hui")
+
+    const adddata = async () => {
+        if (formatDate(date) <= getCurrentDate()) {
+            Alert.alert("Sélectionner une date d'expiration différente de celle d'aujourd'hui")
+            return;
         }
-        else if (!label || !description ||  !selectedDocument) {
+        if (!label || !description || !selectedDocument) {
             Alert.alert("Error", "Please fill all fields and select a document");
-
+            return;
         }
 
-        else {
+        try {
+            const downloadURL = await uploadpdf();
             set(ref(database, 'books/' + label), {
-                BookReference: nextref(),
+                BookReference: newBookRef,
                 DateCreation: getCurrentDate(),
                 label: label,
                 dateExpiration: formatDate(date),
                 description: description,
                 category: selectedType,
-                Book:selectedDocument,
-
-
+                Book: downloadURL,
             });
 
-            setLabel('')
-            setDate(date)
-            setDescription('')
-            uploadpdf()
-            Alert.alert("Book Added!")
+            setLabel('');
+            setDate(new Date());
+            setDescription('');
+            setSelectedDocument(null);
+            Alert.alert("Book Added!");
+        } catch (error) {
+            console.error("Error adding book:", error);
+            Alert.alert("Error", "Failed to add the book: " + error.message);
         }
     }
 
