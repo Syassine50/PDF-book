@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, Linking } from 'react-native';
 import { database } from '../firebaseConfig';
 import {push, ref, set, get} from 'firebase/database';
 
+
 const BookDetails = ({ route, navigation }) => {
     const [book, setBook] = useState(null);
     const { bookId } = route.params;
@@ -28,6 +29,9 @@ const BookDetails = ({ route, navigation }) => {
     const handleDownload = () => {
         Linking.openURL(book.Book);
     };
+    const handleViewPdf = () => {
+        navigation.navigate('PdfViewer', { pdfUri: book.Book });
+    };
 
     return (
         <View style={styles.container}>
@@ -37,6 +41,8 @@ const BookDetails = ({ route, navigation }) => {
             <Text>Date de création: {book.DateCreation}</Text>
             <Text>Date d'expiration: {book.dateExpiration}</Text>
             <Button title="Télécharger le livre" onPress={handleDownload} />
+            <Button title="View PDF" onPress={handleViewPdf} />
+
         </View>
     );
 };
