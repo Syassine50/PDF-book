@@ -1,11 +1,28 @@
 import React from "react";
 import {View, Text, StyleSheet, } from "react-native";
 
-const PdfViewer= () => {
+
+const PdfViewer = ({ route }) => {
+    const { pdfUri } = route.params;
     return(
-        <View style={styles.container} >
-            <Text>new file</Text>
-        </View>
+        {/*<Pdf
+
+
+            source={pdfUri}
+            onLoadComplete={(numberOfPages,filePath) => {
+                console.log(`Number of pages: ${numberOfPages}`);
+            }}
+            onPageChanged={(page,numberOfPages) => {
+                console.log(`Current page: ${page}`);
+            }}
+            onError={(error) => {
+                console.log(error);
+            }}
+            onPressLink={(uri) => {
+                console.log(`Link pressed: ${uri}`);
+            }}
+            style={styles.pdf}
+        />*/}
     )
 };
 export default PdfViewer ;
