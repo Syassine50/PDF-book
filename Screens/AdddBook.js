@@ -13,11 +13,10 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as DocumentPicker from 'expo-document-picker';
 import {database, firebase , storage} from '../firebaseConfig';
-import {push, ref, set} from 'firebase/database';
+import {push, ref, serverTimestamp, set} from 'firebase/database';
 import { uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ref as storageRef, deleteObject } from 'firebase/storage';
 
-import * as FileSystem from 'expo-file-system';
 
 import {Picker} from '@react-native-picker/picker';
 
@@ -40,7 +39,7 @@ const AddBook = ({ navigation }) => {
     };
 
     const formatDate = (date) => {
-        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     };
     let result = null;
     const pickDocument =  useCallback(async () => {
@@ -67,7 +66,7 @@ const AddBook = ({ navigation }) => {
 
         //Alert.alert(date + '-' + month + '-' + year);
         // You can turn it in to your desired format
-        return date + '-' + month + '-' + year;//format: d-m-y;
+        return year + '-' + month + '-' + date;//format: d-m-y;
     }
     const [label, setLabel] = useState('');
     const [description, setDescription] = useState('');
@@ -132,6 +131,8 @@ const AddBook = ({ navigation }) => {
             set(ref(database, 'books/' + label), {
                 BookReference: newBookRef,
                 DateCreation: getCurrentDate(),
+
+                createdAt: serverTimestamp(),
                 label: label,
                 dateExpiration: formatDate(date),
                 description: description,
